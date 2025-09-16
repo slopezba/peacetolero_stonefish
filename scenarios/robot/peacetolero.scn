@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<scenario>
+
+    <looks>
+        <look name="white" roughness="0.3" rgb="0.929 0.929 0.929"/>
+        <look name="orange" roughness="0.0" rgb="1.0 0.1 0.0"/>
+        <look name="yellow" roughness="1.0" rgb="1 0.5 0.0"/>
+        <look name="red" roughness="1.0" rgb="1.0 0.0 0.0"/>
+        <look name="wood" roughness="1.0" rgb="0.412 0.325 0.094"/>
+        <look name="cilindro_tex" gray="1.0" roughness="0.2" metalness="1.0"
+            texture="$(find peacetolero_stonefish)/resources/robot/cilindro_tex.png"/>
+    </looks>
+
+    <robot name="$(arg robot_name)" fixed="true" self_collisions="false">
+
+        <base_link name="Vehicle" type="compound" physics="floating">
+
+            <external_part name="cilindro" type="model" physics="floating" buoyant="false">
+                <physical>
+                    <mesh filename="robot/cilindro.obj" scale="1.0"/>
+                    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+                </physical>
+                <visual>
+                    <mesh filename="robot/cilindro.obj" scale="1.0"/>
+                    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+                </visual>
+                <material name="Fiberglass"/>
+                <mass value="50.0"/>
+                <look name="cilindro_tex"/>
+                <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </external_part>
+
+            <external_part name="soporte" type="model" physics="floating" buoyant="false">
+                <physical>
+                    <mesh filename="robot/soporte.obj" scale="1.0"/>
+                    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+                </physical>
+                <visual>
+                    <mesh filename="robot/soporte.obj" scale="1.0"/>
+                    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+                </visual>
+                <material name="Fiberglass"/>
+                <mass value="50.0"/>
+                <look name="white"/>
+                <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </external_part>
+
+        </base_link>
+
+        <!-- sensors -->
+
+        <sensor name="dynamics" type="odometry" rate="30.0">
+            <link name="Vehicle"/>
+            <origin rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <ros_publisher topic="/catamaran/dynamics/odometry_truth"/>
+        </sensor>
+
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+
+        <ros_subscriber thrusters="/catamaran/controller/thruster_setpoints_sim"/>
+        <ros_publisher thrusters="/catamaran/controller/thruster_state"/>
+    </robot>
+
+</scenario>
