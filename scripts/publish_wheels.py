@@ -23,7 +23,7 @@ class PropellerPub(Node):
             "peacetolero/wheel_back_right_joint",
             "peacetolero/wheel_back_left_joint",
         ]
-        self.msg.velocity = [1.0, 1.0, 1.0, 1.0]
+        self.msg.velocity = [2.0, 2.0, 2.0, 2.0]
 
         self.timer: Timer = self.create_timer(0.1, self.timer_callback)
 
