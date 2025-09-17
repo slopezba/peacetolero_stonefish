@@ -6,9 +6,9 @@
         <look name="orange" roughness="0.0" rgb="1.0 0.1 0.0"/>
         <look name="yellow" roughness="1.0" rgb="1 0.5 0.0"/>
         <look name="red" roughness="1.0" rgb="1.0 0.0 0.0"/>
-        <look name="wood" roughness="1.0" rgb="0.412 0.325 0.094"/>
         <look name="cilindro_tex" gray="1.0" roughness="0.2" metalness="1.0"
             texture="$(find peacetolero_stonefish)/resources/robot/cilindro_tex.png"/>
+        <look name="rubber" gray="0.05" roughness="1.0"/>
     </looks>
 
     <robot name="$(arg robot_name)" fixed="true" self_collisions="false">
@@ -17,7 +17,7 @@
 
             <external_part name="cilindro" type="model" physics="floating" buoyant="false">
                 <physical>
-                    <mesh filename="robot/cilindro.obj" scale="1.0"/>
+                    <mesh filename="robot/cilindro_phy.obj" scale="1.0"/>
                     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
                 </physical>
                 <visual>
@@ -32,7 +32,7 @@
 
             <external_part name="soporte" type="model" physics="floating" buoyant="false">
                 <physical>
-                    <mesh filename="robot/soporte.obj" scale="1.0"/>
+                    <mesh filename="robot/soporte_phy.obj" scale="1.0"/>
                     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
                 </physical>
                 <visual>
@@ -47,18 +47,125 @@
 
         </base_link>
 
-        <!-- sensors -->
+        <!-- wheels links-->
+        <link name="WheelFrontR" type="model" physics="surface">
+            <physical>
+                <mesh filename="robot/wheel_phy.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </physical>
+            <visual>
+                <mesh filename="robot/wheel.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </visual>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Rubber2"/>
+            <look name="rubber"/>
+        </link>
+
+        <link name="WheelFrontL" type="model" physics="surface">
+            <physical>
+                <mesh filename="robot/wheel_phy.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 ${pi}" xyz="0.0 0.0 0.0"/>
+            </physical>
+            <visual>
+                <mesh filename="robot/wheel.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 ${pi}" xyz="0.0 0.0 0.0"/>
+            </visual>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Rubber2"/>
+            <look name="rubber"/>
+        </link>
+
+        <link name="WheelBackR" type="model" physics="surface">
+            <physical>
+                <mesh filename="robot/wheel_phy.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </physical>
+            <visual>
+                <mesh filename="robot/wheel.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            </visual>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Rubber2"/>
+            <look name="rubber"/>
+        </link>
+
+        <link name="WheelBackL" type="model" physics="surface">
+            <physical>
+                <mesh filename="robot/wheel_phy.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 ${pi}" xyz="0.0 0.0 0.0"/>
+            </physical>
+            <visual>
+                <mesh filename="robot/wheel.obj" scale="1.0"/>
+                <origin rpy="0.0 0.0 ${pi}" xyz="0.0 0.0 0.0"/>
+            </visual>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <material name="Rubber1"/>
+            <look name="rubber"/>
+        </link>
+
+        <!-- wheel joints -->
+        <joint name="wheel_front_right_joint" type="revolute">
+            <parent name="Vehicle"/>
+            <child name="WheelFrontR"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0988 0.127 0.0915"/>
+            <axis xyz="0.0 1.0 0.0"/>
+        </joint>
+
+        <joint name="wheel_front_left_joint" type="revolute">
+            <parent name="Vehicle"/>
+            <child name="WheelFrontL"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0988 -0.127 0.0915"/>
+            <axis xyz="0.0 -1.0 0.0"/>
+        </joint>
+
+        <joint name="wheel_back_right_joint" type="revolute">
+            <parent name="Vehicle"/>
+            <child name="WheelBackR"/>
+            <origin rpy="0.0 0.0 0.0" xyz="-0.1212 0.127 0.0915"/>
+            <axis xyz="0.0 1.0 0.0"/>
+        </joint>
+
+        <joint name="wheel_back_left_joint" type="revolute">
+            <parent name="Vehicle"/>
+            <child name="WheelBackL"/>
+            <origin rpy="0.0 0.0 0.0" xyz="-0.1212 -0.127 0.0915"/>
+            <axis xyz="0.0 -1.0 0.0"/>
+        </joint>
+
+        <!-- wheel actuators -->
+
+        <actuator name="wheel_servo_front_right" type="servo">
+            <joint name="wheel_front_right_joint"/>
+            <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
+        </actuator>
+
+        <actuator name="wheel_servo_front_left" type="servo">
+            <joint name="wheel_front_left_joint"/>
+            <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
+        </actuator>
+
+
+        <sensor name="wheel_servo_back_right" rate="100.0" type="encoder">
+            <joint name="wheel_back_right_joint"/>
+            <ros_publisher topic="/$(arg robot_name)/joint_states"/>
+        </sensor>
+
+        <sensor name="wheel_servo_back_left" rate="100.0" type="encoder">
+            <joint name="wheel_back_left_joint"/>
+            <ros_publisher topic="/$(arg robot_name)/joint_states"/>
+        </sensor>
 
         <sensor name="dynamics" type="odometry" rate="30.0">
             <link name="Vehicle"/>
             <origin rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
-            <ros_publisher topic="/catamaran/dynamics/odometry_truth"/>
+            <ros_publisher topic="/peacetolero/dynamics/odometry_truth"/>
         </sensor>
 
         <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
 
-        <ros_subscriber thrusters="/catamaran/controller/thruster_setpoints_sim"/>
-        <ros_publisher thrusters="/catamaran/controller/thruster_state"/>
+        <ros_subscriber servos="/$(arg robot_name)/commands/wheel_velocities"/>
+
     </robot>
 
 </scenario>
