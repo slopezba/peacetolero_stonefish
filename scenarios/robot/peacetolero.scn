@@ -11,11 +11,11 @@
         <look name="rubber" gray="0.05" roughness="1.0"/>
     </looks>
 
-    <robot name="$(arg robot_name)" fixed="true" self_collisions="false">
+    <robot name="$(arg robot_name)" fixed="false" self_collisions="false">
 
-        <base_link name="Vehicle" type="compound" physics="floating">
+        <base_link name="Vehicle" type="compound" physics="submerged">
 
-            <external_part name="cilindro" type="model" physics="floating" buoyant="false">
+            <external_part name="cilindro" type="model" physics="submerged">
                 <physical>
                     <mesh filename="robot/cilindro_phy.obj" scale="1.0"/>
                     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -30,7 +30,7 @@
                 <compound_transform rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             </external_part>
 
-            <external_part name="soporte" type="model" physics="floating" buoyant="false">
+            <external_part name="soporte" type="model" physics="surface">
                 <physical>
                     <mesh filename="robot/soporte_phy.obj" scale="1.0"/>
                     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -154,17 +154,6 @@
             <joint name="wheel_back_left_joint"/>
             <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
         </actuator>
-
-
-        <!-- <sensor name="wheel_servo_back_right" rate="100.0" type="encoder">
-            <joint name="wheel_back_right_joint"/>
-            <ros_publisher topic="/$(arg robot_name)/joint_states"/>
-        </sensor>
-
-        <sensor name="wheel_servo_back_left" rate="100.0" type="encoder">
-            <joint name="wheel_back_left_joint"/>
-            <ros_publisher topic="/$(arg robot_name)/joint_states"/>
-        </sensor> -->
 
         <sensor name="dynamics" type="odometry" rate="30.0">
             <link name="Vehicle"/>
