@@ -13,11 +13,10 @@ find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(cola2_msgs REQUIRED)
 find_package(stonefish_ros2 REQUIRED)
 
 # Declare the executable
-add_executable(peacetolero_stonefish_node src/peacetolero_stonefish_node.cpp)
+# add_executable(peacetolero_stonefish_node src/peacetolero_stonefish_node.cpp)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -37,6 +36,7 @@ install(DIRECTORY
   scenarios
   resources
   config
+  scripts
   DESTINATION share/${PROJECT_NAME}/
 )
 
@@ -45,23 +45,21 @@ ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 install(PROGRAMS
   scripts/odom_to_tf.py
-  scripts/publish_propeller.py
-  scripts/velocity_req.py
+  scripts/publish_wheels.py
   scripts/velocity_req_rqt.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
 # Specify the dependencies for the executable
-ament_target_dependencies(peacetolero_stonefish_node
-  rclcpp
-  std_msgs
-  cola2_msgs
-  stonefish_ros2
-)
+# ament_target_dependencies(peacetolero_stonefish_node
+#   rclcpp
+#   std_msgs
+#   stonefish_ros2
+# )
 
 # Install the executable
-install(TARGETS peacetolero_stonefish_node
-  DESTINATION lib/${PROJECT_NAME}
-)
+# install(TARGETS peacetolero_stonefish_node
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 ament_package()

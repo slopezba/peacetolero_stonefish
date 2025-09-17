@@ -109,7 +109,7 @@
             <parent name="Vehicle"/>
             <child name="WheelFrontR"/>
             <origin rpy="0.0 0.0 0.0" xyz="0.0988 0.127 0.0915"/>
-            <axis xyz="0.0 1.0 0.0"/>
+            <axis xyz="0.0 -1.0 0.0"/>
         </joint>
 
         <joint name="wheel_front_left_joint" type="revolute">
@@ -123,7 +123,7 @@
             <parent name="Vehicle"/>
             <child name="WheelBackR"/>
             <origin rpy="0.0 0.0 0.0" xyz="-0.1212 0.127 0.0915"/>
-            <axis xyz="0.0 1.0 0.0"/>
+            <axis xyz="0.0 -1.0 0.0"/>
         </joint>
 
         <joint name="wheel_back_left_joint" type="revolute">
@@ -145,8 +145,18 @@
             <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
         </actuator>
 
+        <actuator name="wheel_servo_back_right" type="servo">
+            <joint name="wheel_back_right_joint"/>
+            <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
+        </actuator>
 
-        <sensor name="wheel_servo_back_right" rate="100.0" type="encoder">
+        <actuator name="wheel_servo_back_left" type="servo">
+            <joint name="wheel_back_left_joint"/>
+            <controller position_gain="1.0" velocity_gain="1.0" max_torque="1000.0"/>
+        </actuator>
+
+
+        <!-- <sensor name="wheel_servo_back_right" rate="100.0" type="encoder">
             <joint name="wheel_back_right_joint"/>
             <ros_publisher topic="/$(arg robot_name)/joint_states"/>
         </sensor>
@@ -154,7 +164,7 @@
         <sensor name="wheel_servo_back_left" rate="100.0" type="encoder">
             <joint name="wheel_back_left_joint"/>
             <ros_publisher topic="/$(arg robot_name)/joint_states"/>
-        </sensor>
+        </sensor> -->
 
         <sensor name="dynamics" type="odometry" rate="30.0">
             <link name="Vehicle"/>
@@ -164,6 +174,7 @@
 
         <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
 
+        <ros_publisher servos="/$(arg robot_name)/joint_states"/>
         <ros_subscriber servos="/$(arg robot_name)/commands/wheel_velocities"/>
 
     </robot>
