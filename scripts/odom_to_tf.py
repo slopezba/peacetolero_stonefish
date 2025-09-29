@@ -24,7 +24,6 @@ class FramePublisher(Node):
         self.subscription  # prevent unused variable warning
 
     def odom_sub(self, msg:Odometry):
-        print("got msg")
         t = TransformStamped()
         t.header.stamp = self.get_clock().now().to_msg()
         t.header.frame_id = self.fixed_frame_name

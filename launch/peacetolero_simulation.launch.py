@@ -15,53 +15,29 @@ def generate_launch_description():
         description="Name of the robot",
     )
 
-    # robot_description_arg = DeclareLaunchArgument(
-    #     "robot_description",
-    #     default_value=[LaunchConfiguration("robot_name"), "_description"],
-    #     description="Description of the robot",
-    # )
+    include_description = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare("peacetolero_stonefish"),
+                "launch",
+                "description_sim.launch.py"
+            ])
+        ),
+        launch_arguments={
+            "namespace": "peacetolero"
+        }.items()
+    )
 
-    # robot_xacro_arg = DeclareLaunchArgument(
-    #     "robot_xacro",
-    #     default_value=PathJoinSubstitution(
-    #         [
-    #             FindPackageShare(LaunchConfiguration("robot_description")),
-    #             "urdf",
-    #             "payload.urdf.xacro",
-    #         ]
-    #     ),
-    #     description="Path to the robot Xacro file",
-    # )
-
-    # robot_description = Command(
-    #     [
-    #         "xacro ",
-    #         " ",
-    #         LaunchConfiguration("robot_xacro"),
-    #         " robot_namespace:=",
-    #         LaunchConfiguration("robot_name"),
-    #     ]
-    # )
-
-    # robot_state_publisher = Node(
-    #     package="robot_state_publisher",
-    #     executable="robot_state_publisher",
-    #     name="robot_state_publisher",
-    #     output="screen",
-    #     parameters=[{"robot_description": robot_description}],
-    #     namespace=LaunchConfiguration("robot_name"),
-    # )
-
-    # odom_tf_node = Node(
-    #     package="peacetolero_stonefish",
-    #     executable="odom_to_tf.py",
-    #     name="odom_tf",
-    #     remappings=[
-    #         ("/odom_topic", "/peacetolero/dynamics/odometry_truth"),
-    #     ],
-    #     parameters=[{"fixed_frame": "world_ned", "base_link": "peacetolero/base_link"}],
-    #     output="screen",
-    # )
+    odom_tf_node = Node(
+        package="peacetolero_stonefish",
+        executable="odom_to_tf.py",
+        name="odom_tf",
+        remappings=[
+            ("/odom_topic", "/peacetolero/dynamics/odometry_truth"),
+        ],
+        parameters=[{"fixed_frame": "world_ned", "base_link": "peacetolero/base_link"}],
+        output="screen",
+    )
 
     static_transform_publisher_node = Node(
         package="tf2_ros",
@@ -105,7 +81,7 @@ def generate_launch_description():
                 [FindPackageShare("peacetolero_stonefish"), "resources"]
             ),
             "scenario_desc": PathJoinSubstitution(
-                [FindPackageShare("peacetolero_stonefish"), "scenarios", "sea.scn"]
+                [FindPackageShare("peacetolero_stonefish"), "scenarios", "cirtesu_tank.scn"]
             ),  # Edit for other robots
             "simulation_rate": "300.0",
             "window_res_x": "1440",
@@ -114,13 +90,28 @@ def generate_launch_description():
         }.items(),
     )
 
+    cmdvel_to_joints_node = Node(
+        package="peacetolero_stonefish",     
+        executable="cmd_vel_map.py",  
+        name="cmdvel_to_jointstate",
+        output="screen",
+    )
+
+    joint_state_filter_node = Node(
+        package="peacetolero_stonefish",     
+        executable="joint_states_filter.py", 
+        name="joint_states_filter",
+        output="screen",
+    )
+
     return LaunchDescription(
         [
             robot_name_arg,
-            # robot_description_arg,
-            # robot_xacro_arg,
-            # robot_state_publisher,
+            odom_tf_node,
             static_transform_publisher_node,
             ros2_stonefish_node,
+            cmdvel_to_joints_node,
+            joint_state_filter_node,
+            include_description,
         ]
     )

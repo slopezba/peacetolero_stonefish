@@ -47,6 +47,8 @@ install(PROGRAMS
   scripts/odom_to_tf.py
   scripts/publish_wheels.py
   scripts/velocity_req_rqt.py
+  scripts/cmd_vel_map.py
+  scripts/joint_states_filter.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
