@@ -19,8 +19,16 @@ class CmdVelToJoints(Node):
             10
         )
 
+        # Suscriptor a desired_joint_states (para el brazo Alpha)
+        self.sub_alpha = self.create_subscription(
+            JointState,
+            '/peacetolero/alpha/desired_joint_states',
+            self.alpha_callback,
+            10
+        )
+
         # Publicador de JointState
-        self.pub = self.create_publisher(JointState, '/peacetolero/commands/wheel_velocities', 10)
+        self.pub = self.create_publisher(JointState, '/peacetolero/servo_commands', 10)
 
         # Definir los nombres de las ruedas
         self.wheel_names = [
@@ -54,6 +62,20 @@ class CmdVelToJoints(Node):
 
         self.get_logger().debug(
             f"Published wheel velocities: {wheel_speeds}"
+        )
+
+    def alpha_callback(self, msg: JointState):
+        """Reenvía los desired_joint_states al mismo tópico de wheel velocities"""
+        js = JointState()
+        js.header = Header()
+        js.header.stamp = self.get_clock().now().to_msg()
+        js.name = msg.name
+        js.velocity = msg.velocity
+
+        self.pub.publish(js)
+
+        self.get_logger().debug(
+            f"Published wheel velocities: {js.velocity}"
         )
 
 

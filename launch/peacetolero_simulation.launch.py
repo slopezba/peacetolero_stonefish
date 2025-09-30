@@ -3,9 +3,9 @@ import os
 from launch import LaunchDescription
 from launch_ros.actions import Node, PushRosNamespace
 from launch.actions import DeclareLaunchArgument, GroupAction, IncludeLaunchDescription
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command, FindExecutable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.substitutions import FindPackageShare
+from launch_ros.substitutions import FindPackageShare 
 
 
 def generate_launch_description():
@@ -14,6 +14,23 @@ def generate_launch_description():
         default_value="peacetolero",  # Edit for other robots
         description="Name of the robot",
     )
+
+    # Diccionario con el URDF expandido
+    robot_description = {
+        "robot_description": Command(
+            [
+                PathJoinSubstitution([FindExecutable(name="xacro")]),
+                " ",
+                PathJoinSubstitution(
+                    [FindPackageShare("peacetolero_description"), "urdf", "peacetolero_alpha.config.xacro"]
+                ),
+                " ",
+                "prefix:=", "",
+                " ",
+                "namespace:=", "",
+            ]
+        )
+    }
 
     include_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -90,6 +107,43 @@ def generate_launch_description():
         }.items(),
     )
 
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        output="both",
+        namespace="peacetolero",
+        parameters=[
+           robot_description,
+            PathJoinSubstitution(
+                [
+                    FindPackageShare("peacetolero_description"),
+                    "config",
+                    "peacetolero_alpha_controllers.yaml",
+                ]
+            ),
+        ],
+    )
+
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            ["peacetolero", "/controller_manager"],
+        ],
+    )
+
+    feedback_joint_trajectory_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "feedback_joint_position_trajectory_controller",
+            "--controller-manager",
+            ["peacetolero", "/controller_manager"],
+        ],
+    )
+
     cmdvel_to_joints_node = Node(
         package="peacetolero_stonefish",     
         executable="cmd_vel_map.py",  
@@ -113,5 +167,9 @@ def generate_launch_description():
             cmdvel_to_joints_node,
             joint_state_filter_node,
             include_description,
+            control_node,
+            joint_state_broadcaster_spawner,
+            feedback_joint_trajectory_controller_spawner,
+
         ]
     )

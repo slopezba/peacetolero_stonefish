@@ -374,7 +374,7 @@
         <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
 
         <ros_publisher servos="/joint_states"/>
-        <ros_subscriber servos="/$(arg robot_name)/commands/wheel_velocities"/>
+        <ros_subscriber servos="/$(arg robot_name)/servo_commands"/>
 
     </robot>
 
