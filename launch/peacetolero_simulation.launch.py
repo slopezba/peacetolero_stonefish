@@ -15,6 +15,10 @@ def generate_launch_description():
         description="Name of the robot",
     )
 
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare("peacetolero_stonefish"), "config", "view.rviz"]
+    )
+
     # Diccionario con el URDF expandido
     robot_description = {
         "robot_description": Command(
@@ -158,6 +162,14 @@ def generate_launch_description():
         output="screen",
     )
 
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="screen",
+        arguments=["-d", rviz_config_file],
+    )
+
     return LaunchDescription(
         [
             robot_name_arg,
@@ -170,6 +182,6 @@ def generate_launch_description():
             control_node,
             joint_state_broadcaster_spawner,
             feedback_joint_trajectory_controller_spawner,
-
+            rviz_node, 
         ]
     )

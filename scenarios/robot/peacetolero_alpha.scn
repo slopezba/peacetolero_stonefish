@@ -362,12 +362,25 @@
 			<initial position="0.125"/>
 		</actuator> 		 -->
 
+		<sensor name="zed_camera_link1" rate="25.0" type="camera">
+			<specs resolution_x="1280" resolution_y="720" horizontal_fov="110.0"/>
+			<!-- <origin xyz="0.0 0.22 -0.05" rpy="-1.57 3.1416 0"/>   para camara rgb de bluerobotics -->
+			<origin xyz="0.2 0.0 0.0" rpy="1.57 0.0 1.57"/>
+			<link name="Vehicle"/>
+			<ros_publisher topic="/zedmx"/>
+        </sensor>
 
-
+		<sensor name="zed_camera_link" rate="10.0" type="depthcamera">
+            <specs resolution_x="1280" resolution_y="720" horizontal_fov="110.0" depth_min="0.2" depth_max="10.0"/>
+            <noise depth="0.02"/>
+            <origin xyz="0.2 0.0 0.0" rpy="1.57 0.0 1.57"/>
+            <link name="Vehicle"/>
+			<ros_publisher topic="/zedmx/depth_camera"/>
+        </sensor>
 
         <sensor name="dynamics" type="odometry" rate="30.0">
             <link name="Vehicle"/>
-            <origin rpy="3.1416 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <ros_publisher topic="/peacetolero/dynamics/odometry_truth"/>
         </sensor>
 
