@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<scenario>
+    <looks>
+        <look name="yellow" roughness="1.0" rgb="1 0.5 0.0"/>
+    </looks>
+
+    <static name="PipeSegment1" type="model">
+        <physical>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0" convex="false"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Steel"/>
+        <look name="yellow"/>
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+    </static>
+
+    <static name="PipeSegment2" type="model">
+        <physical>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0" convex="false"/>
+            <origin rpy="${2*pi/10} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0"/>
+            <origin rpy="${2*pi/10} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Steel"/>
+        <look name="yellow"/>
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+    </static>
+
+    <static name="PipeSegment3" type="model">
+        <physical>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0" convex="false"/>
+            <origin rpy="${2*pi/10*2} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0"/>
+            <origin rpy="${2*pi/10*2} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Steel"/>
+        <look name="yellow"/>
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+    </static>
+
+    <static name="PipeSegment4" type="model">
+        <physical>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0" convex="false"/>
+            <origin rpy="${2*pi/10*3} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0"/>
+            <origin rpy="${2*pi/10*3} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Steel"/>
+        <look name="yellow"/>
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+    </static>
+
+    <static name="PipeSegment5" type="model">
+        <physical>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0" convex="false"/>
+            <origin rpy="${2*pi/10*4} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0"/>
+            <origin rpy="${2*pi/10*4} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Steel"/>
+        <look name="yellow"/>
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+    </static>
+
+    <static name="PipeSegment6" type="model">
+        <physical>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0" convex="false"/>
+            <origin rpy="${2*pi/10*5} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0"/>
+            <origin rpy="${2*pi/10*5} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Steel"/>
+        <look name="yellow"/>
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+    </static>
+
+    <static name="PipeSegment7" type="model">
+        <physical>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0" convex="false"/>
+            <origin rpy="${2*pi/10*6} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </physical>
+        <visual>
+            <mesh filename="$(find peacetolero_stonefish)/resources/pipe.obj" scale="1.0"/>
+            <origin rpy="${2*pi/10*6} 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <material name="Steel"/>
+        <look name="yellow"/>
+        <world_transform rpy="0.0 0.0 $(arg yaw)" xyz="$(arg position)"/>
+    </static>
+
+</scenario>
