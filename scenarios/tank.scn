@@ -14,6 +14,7 @@
 
     <looks>
         <look name="cirtesu_tank" gray="1.0" roughness="0.2" metalness="0.0" texture="cirtesu/tank_tex.png" />
+        <look name="pipe" gray="0.5" roughness="0.2" metalness="0.0" texture="cirtesu/tank_tex.png" />
         <look name="poster" gray="1.0" roughness="0.8" texture="cirtesu/poster_pool_small.png"/>
     </looks>
     
@@ -23,6 +24,20 @@
 		<look name="poster" uv_mode="1"/>
 		<world_transform rpy="0.0 0.0 1.578" xyz="1.0 0.0 4.8"/>
    </static> -->
+
+   <static name="Pipe" type="model">
+        <physical>
+            <mesh filename="pipe/pipe_phy.obj" scale="1.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        </physical>
+        <visual>
+            <mesh filename="pipe/pipe.obj" scale="1.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        </visual>
+        <material name="Rock" />
+        <look name="cirtesu_tank" />
+        <world_transform rpy="0.0 1.57 1.57" xyz="3.5 0.0 4.6" />
+    </static>
 
     <static name="Tank" type="model">
         <physical>
@@ -34,7 +49,7 @@
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         </visual>
         <material name="Rock" />
-        <look name="cirtesu_tank" />
+        <look name="pipe" />
         <world_transform rpy="0.0 0.0 3.1416" xyz="0.0 0.0 0.0" />
     </static>
 

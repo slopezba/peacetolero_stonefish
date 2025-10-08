@@ -44,7 +44,7 @@
         </friction_table>
     </materials>
 
-    <include file="$(find peacetolero_stonefish)/scenarios/robot/peacetolero_alpha.scn">
+    <include file="$(find peacetolero_stonefish)/scenarios/robot/peacetolero_alpha_sensor.scn">
         <arg name="robot_name" value="peacetolero"/>
         <arg name="position" value="2.0 0.0 4.5"/>
         <arg name="yaw" value="0.0"/>

@@ -38,11 +38,20 @@ class CmdVelToJoints(Node):
             'peacetolero/wheel_back_left_joint'
         ]
 
+        # Definir los nombres de los joints del brazo Alpha
+        self.alpha_joints = [
+            # 'peacetolero/alpha_axis_a',
+            'peacetolero/alpha_axis_b',
+            'peacetolero/alpha_axis_c',
+            'peacetolero/alpha_axis_d',
+            'peacetolero/alpha_axis_e'
+        ]
+
         self.max_wheel_speed = 2.0  # rad/s (puedes ajustar según tu modelo)
 
     def cmd_vel_callback(self, msg: Twist):
         # Escalar de [-1, 1] a [-max_wheel_speed, max_wheel_speed]
-        linear = max(-1.0, min(1.0, msg.linear.x)) * self.max_wheel_speed
+        linear = max(-1.5, min(1.0, msg.linear.x)) * self.max_wheel_speed
         angular = max(-1.0, min(1.0, msg.angular.z)) * self.max_wheel_speed
 
         # Calcular velocidades de ruedas
@@ -65,18 +74,32 @@ class CmdVelToJoints(Node):
         )
 
     def alpha_callback(self, msg: JointState):
-        """Reenvía los desired_joint_states al mismo tópico de wheel velocities"""
+        """Reenvía los desired_joint_states al mismo tópico de servos en stonefish"""
+        # Inicializar todos los joints del Alpha en 0.0
+        received = {j: 0.0 for j in self.alpha_joints}
+
+        # Sobrescribir con los valores recibidos (si existen y no NaN)
+        for n, v in zip(msg.name, msg.velocity):
+            if v != v:  # comprobación de NaN (NaN != NaN en Python)
+                v = 0.0
+            if n in received:
+                received[n] = v
+
+        # Construir la lista ordenada según self.alpha_joints
+        velocities = [received[j] for j in self.alpha_joints]
+
         js = JointState()
         js.header = Header()
         js.header.stamp = self.get_clock().now().to_msg()
-        js.name = msg.name
-        js.velocity = msg.velocity
+        js.name = self.alpha_joints
+        js.velocity = velocities
 
         self.pub.publish(js)
 
         self.get_logger().debug(
-            f"Published wheel velocities: {js.velocity}"
+            f"Published alpha velocities: {dict(zip(self.alpha_joints, velocities))}"
         )
+
 
 
 def main(args=None):

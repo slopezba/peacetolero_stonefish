@@ -48,6 +48,7 @@ install(PROGRAMS
   scripts/publish_wheels.py
   scripts/velocity_req_rqt.py
   scripts/cmd_vel_map.py
+  scripts/point_cloud_publisher.py
   scripts/joint_states_filter.py
   DESTINATION lib/${PROJECT_NAME}
 )

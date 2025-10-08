@@ -170,6 +170,13 @@ def generate_launch_description():
         arguments=["-d", rviz_config_file],
     )
 
+    point_cloud_publish = Node(
+        package="peacetolero_stonefish",     
+        executable="point_cloud_publisher.py",  
+        name="point_cloud_publisher",
+        output="screen",
+    )
+
     return LaunchDescription(
         [
             robot_name_arg,
@@ -183,5 +190,6 @@ def generate_launch_description():
             joint_state_broadcaster_spawner,
             feedback_joint_trajectory_controller_spawner,
             rviz_node, 
+            point_cloud_publish,
         ]
     )
